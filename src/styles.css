@@ -1,0 +1,306 @@
+:root {
+  --sidebar-bg: #f4f4f4;
+  --main-bg: #ffffff;
+  --main-editor-bg: #e2e0e0;
+
+  --card-bg: #f9f9f9;
+  --text-color: #1c1c1c;
+  --label-text-color: #6c757d;
+  --button-text-color: #f9f9f9;
+
+  --border-color: #c5c5c5;
+
+  --primary: #38393a;
+  --primary-hover: #0dcaf0;
+  --primary-disabled: #c1c9d1;
+  --shadow-primary: rgba(92, 112, 128, 0.2);
+
+  --danger: #c44c58;
+  --danger-hover: #a13a44;
+  --shadow-danger: rgba(196, 76, 88, 0.25);
+
+  --hight-text-background-color: #fffb05;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sidebar-bg: #121212;
+    --main-bg: #1a1a1a;
+    --main-editor-bg: #3f3e3e;
+    --card-bg: #222222;
+    --text-color: #eaeaea;
+    --label-text-color: #adb5bd;
+    --button-text-color: #1c1c1c;
+
+    --border-color: #8d8d8d;
+
+    --primary: #ebf0f3;
+    --primary-hover: #ebf0f381;
+    --primary-disabled: #37474f;
+    --shadow-primary: rgba(176, 190, 197, 0.2);
+
+    --danger: #ef9a9a;
+    --danger-hover: #d32f2f;
+    --shadow-danger: rgba(239, 154, 154, 0.25);
+    --hight-text-background-color: #797703;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+}
+
+/* 공통 */
+body {
+  background-color: var(--main-bg) !important;
+  color: var(--text-color) !important;
+  font-family: "Pretendard", sans-serif !important;
+}
+
+/* form 공통 스타일 */
+.form-control {
+  font-size: 0.7rem !important;
+  background-color: transparent !important;
+  color: var(--text-color) !important;
+}
+
+.form-label {
+  color: var(--label-text-color) !important;
+  font-size: 0.7rem !important;
+}
+
+.form-text {
+  color: var(--text-color) !important;
+  font-weight: bold;
+  font-size: 0.7rem !important;
+}
+
+/* Button 공통 스타일 */
+.btnc-outline {
+  color: var(--text-color);
+  background-color: transparent !important;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid var(--primary);
+}
+
+.btnc {
+  color: var(--button-text-color);
+  background-color: var(--primary) !important;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+
+.btnc-sm {
+  font-size: 0.7rem;
+}
+
+.btnc:hover {
+  color: var(--text-color);
+  font-weight: bolder;
+  transform: translateY(-1px);
+  background-color: var(--primary-hover) !important; /* ← hover용 색상 추가 */
+  box-shadow: 0 4px 12px rgba(204, 202, 202, 0.1);
+}
+
+.btnc:active {
+  background-color: var(--primary-hover);
+
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btnc:disabled {
+  background-color: var(--bs-secondary);
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* Dark mode 설정 */
+.dark-mode ngx-editor {
+  background-color: var(--main-bg);
+  color: var(--text-color);
+}
+
+.dark-mode .NgxEditor__MenuBar {
+  background-color: var(--main-bg);
+  color: var(--text-color);
+}
+
+/* 내부 텍스트 영역 */
+.dark-mode ngx-editor .ProseMirror {
+  background-color: var(--main-bg);
+  color: var(--text-color);
+}
+
+/* 툴바 메뉴 */
+.dark-mode ngx-editor-menu {
+  background-color: #2c2c2c !important;
+  color: var(--text-color);
+}
+
+/* 툴바 아이콘들 */
+.dark-mode ngx-editor-menu button {
+  color: var(--text-color);
+}
+
+/* 포커스 스타일도 덮어씌우기 */
+.dark-mode ngx-editor .ProseMirror:focus {
+  outline: none;
+  background-color: var(--main-bg);
+  color: var(--text-color);
+}
+
+.NgxEditor,
+.NgxEditor__Content {
+  height: 100% !important;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: #686a6b; /* Bootstrap text-secondary */
+  padding: 0.25rem;
+  cursor: pointer;
+  transition: color 0.4s ease;
+}
+
+.icon-btn.icon-yellow:hover {
+  color: #ffc107;
+  transform: scale(1.2); /* 1.2배 커짐 */
+}
+
+.icon-btn.icon-red:hover {
+  color: #dc3545;
+  transform: scale(1.2); /* 1.2배 커짐 */
+}
+
+[class*="ag-theme-"] {
+  font-size: 0.7rem !important;
+}
+
+.app-toast {
+  position: fixed;
+  top: 100px;
+  left: 20%;
+  transform: translateX(-50%);
+  background-color: rgba(37, 143, 16, 0.9);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 999999;
+  animation: fadeInOut 2s ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+}
+
+.blog-menu-show-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-size: 1.5rem !important;
+}
+
+.blog-toolbar {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  color: #adacac;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  border-radius: 8px;
+  font-size: 1.5rem !important;
+  box-shadow: 0 0 1px rgb(255, 255, 255);
+  background-color: rgba(20, 21, 20, 0.9);
+}
+
+.bi-caret-up:hover,
+.bi-caret-down:hover,
+.bi-arrow-clockwise:hover,
+.bi-arrow-down-right-circle:hover {
+  color: #ffffff;
+}
+
+.bi-pencil-square:hover {
+  color: #1be333;
+}
+
+.bi-pen:hover {
+  color: #951db9;
+}
+
+.bi-gear:hover,
+.bi-list-columns:hover,
+.blog-menu-show-icon:hover,
+.bi-copy:hover {
+  color: #f6ec23;
+}
+
+.bi-eyeglasses:hover {
+  color: #ff0008;
+}
+
+.bi-sunglasses:hover,
+.bi-search-heart:hover {
+  color: #fffffe;
+}
+
+.font-control {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.font-control i {
+  font-size: 16px; /* 아이콘 크기 조정 */
+  padding: 0;
+  margin: 0;
+  height: 16px; /* 필요 시 조정 */
+  width: 16px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.font-control i + i {
+  margin-top: -2px; /* 아이콘끼리 겹쳐 붙는 느낌 */
+}

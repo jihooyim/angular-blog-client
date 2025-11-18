@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": ["jasmine", "node"],
+    "lib": ["ES2022", "DOM"],
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "node",        // ← 에러 메시지 권고대로 node
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": true,
+    "noEmit": false
+  },
+  "files": [
+    "src/test.ts"                      // ← 테스트 부트스트랩 파일
+  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts","src/test.ts"]
+  
+}

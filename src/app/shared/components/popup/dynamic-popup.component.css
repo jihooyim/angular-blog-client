@@ -1,0 +1,36 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup {
+  background: var(--main-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(102, 153, 204, 0.5);
+}
+
+.popup-header {
+  padding: 10px;
+  background: #717172;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-body {
+  flex: 1;
+  overflow: auto;
+  padding: 20px; /* 필요에 따라 16px, 40px 등 조정 가능 */
+}

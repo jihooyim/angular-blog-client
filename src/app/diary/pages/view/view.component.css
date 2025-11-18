@@ -1,0 +1,135 @@
+/* 필수: html, body 높이 100% 설정 */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+/* 최상위 배경 영역 */
+.blog-background {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  flex-direction: column; /* 세로 레이아웃 */
+}
+
+/* 스크롤이 생길 경우에도 전체 배경 적용되도록 */
+.layout-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-height: 100vh;
+  flex-wrap: wrap; /* 화면 크기에 맞게 내용이 흐를 수 있도록 함 */
+}
+
+/* 리스트 영역 */
+.list-section {
+  flex: 1 1 27%; /* 비율을 30%로 설정, 남은 공간을 70%는 본문 영역에 할당 */
+  background-color: rgba(0, 0, 0, 0.7); /* 불투명 배경 */
+  padding: 1rem;
+  margin-top: 2rem;
+  margin-right: 1rem;
+  border-radius: 10px;
+  overflow-y: auto;
+}
+
+/* 본문 영역 */
+.detail-section {
+  flex: 1 1 70%; /* 비율을 70%로 설정 */
+  padding: 2rem;
+  border-radius: 10px;
+  overflow-y: auto;
+}
+
+.blog-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-weight: 200;
+}
+
+.blog-date {
+  /* font-size: 0.5rem; */
+  margin-bottom: 2rem;
+  /* color: #adacac; */
+  position: relative;
+  z-index: 2;
+}
+
+
+
+.blog-title:focus {
+  outline: none;
+}
+
+.blog-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  word-break: break-word;
+  position: relative;
+  z-index: 1;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 200;
+}
+
+.blog-time span {
+  font-size: 0.9rem;
+  color: #b8eb59;
+}
+
+.btn-back {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  border: none;
+}
+
+i {
+  cursor: pointer;
+}
+
+.edit-icon i {
+  font-size: 1.2rem;
+}
+
+.edit-icon-group {
+  margin-top: 1rem;
+  align-items: center;
+}
+
+.tag-span {
+  color: rgb(78, 192, 150);
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+/* 반응형: 작은 화면에서 리스트와 본문 영역의 비율을 조정 */
+@media (max-width: 768px) {
+  .layout-container {
+    flex-direction: column; /* 모바일에서는 세로로 쌓이게 설정 */
+  }
+
+  .list-section {
+    flex: 1 1 100%;
+    margin-bottom: 1rem;
+    border-radius: 0px;
+  }
+
+  .detail-section {
+    flex: 1 1 100%; /* 모바일에서는 본문이 전체 너비를 차지하도록 설정 */
+    padding: 0;
+    border-radius: 0px;
+  }
+}

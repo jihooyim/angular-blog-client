@@ -1,0 +1,13 @@
+<ag-grid-angular
+  [class]="themeClass"
+  [rowData]="rowData"
+  [columnDefs]="columnDefs"
+  [gridOptions]="gridOptions"
+  [defaultColDef]="defaultColDef"
+  rowSelection="multiple"
+  class="ag-theme"
+  [context]="context"
+  [style]="myStyle"
+  (gridSizeChanged)="onGridSizeChanged($event)"
+  (gridReady)="onGridReady($event)"
+></ag-grid-angular>

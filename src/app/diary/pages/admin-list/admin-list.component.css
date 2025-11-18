@@ -1,0 +1,23 @@
+.icon-hover {
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.icon-hover:hover {
+  transform: scale(1.5);
+  color: #54e031;
+}
+
+.ag-grid-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  display: block;
+}
+
+body,
+div,
+button {
+  font-size: 0.7rem !important;
+}

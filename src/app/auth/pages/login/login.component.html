@@ -1,0 +1,68 @@
+<div
+  class="container d-flex justify-content-center align-items-center"
+  style="min-height: 100vh"
+>
+  <div
+    class="card p-4 shadow rounded login-form"
+    style="width: 100%; max-width: 400px"
+  >
+    <form (ngSubmit)="onLogin()">
+      <div class="mb-2">
+        <input
+          [(ngModel)]="username"
+          name="username"
+          placeholder="아이디"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <input
+          [(ngModel)]="password"
+          name="password"
+          type="password"
+          placeholder="비밀번호"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <div class="d-grid mb-3">
+        <button
+          type="submit"
+          class="btnc"
+          [disabled]="isLoggingIn || !username || !password"
+        >
+          {{ isLoggingIn ? "로그인 중..." : "로그인" }}
+        </button>
+      </div>
+    </form>
+
+    <div class="d-flex justify-content-between mt-3">
+      <button
+        type="button"
+        class="btn btn-outline-secondary btn-sm"
+        (click)="onMe()"
+      >
+        내 정보
+      </button>
+
+      @if (isLoggedIn) {
+      <button
+        type="button"
+        class="btn btn-outline-danger btn-sm"
+        (click)="onLogout()"
+      >
+        로그아웃
+      </button>
+      }
+    </div>
+
+    @if (out) {
+    <div class="mt-4">
+      <pre class="bg-light p-2 rounded small">{{ out | json }}</pre>
+    </div>
+    }
+  </div>
+</div>

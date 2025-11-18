@@ -1,0 +1,25 @@
+<div style="display: flex; justify-content: space-between; align-items: center">
+  <input
+    type="file"
+    style="min-width: 300px"
+    (change)="onFileSelected($event)"
+  />
+  <button class="btnc btnc-sm me-2" (click)="upload()" [disabled]="loading">
+    Import
+  </button>
+</div>
+<div
+  *ngIf="message"
+  style="display: flex; justify-content: space-between; margin-top: 20px"
+>
+  <div [ngClass]="messageClass" class="px-4 py-2 rounded">
+    {{ message }}
+  </div>
+  <div style="display: flex; justify-content: flex-end">
+    @if(isDone) {
+    <button class="btn btn-secondary btn-sm me-2 mt-2" (click)="onClose(false)">
+      Close
+    </button>
+    }
+  </div>
+</div>

@@ -1,0 +1,13 @@
+body,
+div,
+button {
+  font-size: 0.7rem !important;
+}
+
+.ag-grid-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  display: block;
+}

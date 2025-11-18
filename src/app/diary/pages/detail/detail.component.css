@@ -1,0 +1,29 @@
+ngx-editor {
+  display: block;
+  height: 100%;
+}
+
+.title-input {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 4px solid var(--border-color);
+  box-shadow: none;
+}
+
+.side-menu-border {
+  border-top: 0;
+  border-left: 1px solid var(--border-color);
+  border-right: 0;
+  border-bottom: 0;
+  box-shadow: none;
+  height: 100%;
+}
+
+.collapsed {
+  width: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  opacity: 0;
+  transition: all 0.3s ease;
+}

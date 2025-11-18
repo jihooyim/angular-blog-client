@@ -1,0 +1,43 @@
+.no-bullets {
+  list-style-type: none;
+  padding-left: 0;
+  font-weight: 200;
+}
+
+.no-bullets li {
+  padding-bottom: 7px;
+  font-weight: 200;
+  cursor: pointer;
+}
+
+.no-bullets li:hover {
+  text-decoration: underline;
+  font-weight: bolder;
+  color: #a09c90;
+}
+
+.month-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin: 8px 0;
+  font-weight: bold;
+  font-weight: 200;
+}
+
+.month-header span.toggle-icon {
+  color: #bbb;
+}
+
+.arrow-expend:hover {
+  font-weight: bolder;
+  color: #e2d3a6;
+}
+
+.no-bullets li.active {
+  font-weight: bold;
+  background-color: rgba(255, 193, 7, 0.1); /* 노란 강조 배경 */
+  color: #969592;
+  padding-left: 3px;
+}

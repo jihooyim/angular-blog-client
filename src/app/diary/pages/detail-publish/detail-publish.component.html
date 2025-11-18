@@ -1,0 +1,19 @@
+<div
+  class="blog-background"
+  [style.background-image]="'url(' + backgroundImageUrl + ')'"
+>
+  <div class="row justify-content-center" style="min-width: 1000px">
+    <div class="blog-container">
+      <div class="blog-date">
+        {{ blog?.formatPublishedDate?.slice(0, 10) }}
+        <span> {{ formattedTime }} </span>
+      </div>
+
+      <div class="blog-title">
+        {{ blog?.title || "(제목 없음)" }}
+      </div>
+
+      <div class="blog-content" [innerHTML]="blog?.htmlContent ?? ''"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,317 @@
+<div
+  class="container-fluid py-3 d-flex flex-column"
+  style="width: 98vw; height: 100vh"
+>
+  <!-- 상단 버튼 영역 -->
+  <div class="row mb-2">
+    <div class="col-lg-6 d-flex align-items-center gap-2">
+      <input
+        type="text"
+        placeholder="제목"
+        (ngModelChange)="onTitleChange($event)"
+        [(ngModel)]="title"
+        class="form-control rounded-0 mb-3 title-input"
+      />
+
+      <!-- 저장 상태 표시 영역 -->
+      <div class="small text-info" style="width: 100px">
+        @if (isSaving) {
+        <i
+          class="bi bi-arrow-repeat text-success spinner-border spinner-border-sm me-1"
+        ></i
+        >저장중... } @if (isSaved && !isSaving && !isError) {
+        <i class="bi bi-check2-circle text-success me-1"></i>저장됨! } @if
+        (isError) {
+        <i class="bi bi-exclamation-triangle-fill text-danger me-1"></i>임시저장
+        실패! }
+      </div>
+    </div>
+
+    <div
+      class="col-lg-6 text-end small text-muted d-flex align-items-center justify-content-end gap-2"
+    >
+      <!-- 토글 버튼 (항상 표시) -->
+      <a
+        class="icon-link icon-link-hover me-3"
+        [ngClass]="{
+          'link-warning link-underline-warning': isDarkMode === true,
+          'link-dark link-underline-dark': isDarkMode === false
+        }"
+        (click)="goToBlogView($event)"
+        href="#"
+      >
+        Blog
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="bi"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+        >
+          <path
+            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
+          />
+        </svg>
+      </a>
+
+      <button class="btn btn-outline-secondary btn-sm" (click)="goToList()">
+        목록
+      </button>
+
+      <!-- 맞춤법 교정 버튼 -->
+      @if(htmlContent && htmlContent.length > 50) {
+      <button
+        class="btn btn-outline-warning btn-sm d-flex align-items-center gap-2"
+        style="font-size: 0.7rem"
+        (click)="checkSpell()"
+        [disabled]="isLoadingSpellCheck"
+      >
+        <span *ngIf="isLoadingSpellCheck">
+          <i
+            class="bi bi-arrow-repeat spinner-border spinner-border-sm text-info me-1"
+          ></i>
+          {{ spellCheckProgress.current }}/{{ spellCheckProgress.total }}
+          검사중...
+        </span>
+        <span *ngIf="!isLoadingSpellCheck && !spellCheckCompleted"
+          >맞춤법 교정</span
+        >
+        <span *ngIf="spellCheckCompleted && !isLoadingSpellCheck">
+          <i class="bi bi-check2-circle text-success me-1"></i> 완료!
+        </span>
+      </button>
+      }
+
+      <!-- 정제버튼 -->
+      @if(blog.blogId) {
+      <button
+        class="btn btn-outline-info btn-sm"
+        (click)="purify()"
+        [disabled]="isSavingBtn"
+      >
+        {{ refinedButtonName }}
+      </button>
+      } @if(!refinedHtmlContent) {
+      <ng-container *ngIf="saveState === 'default'">
+        <button
+          class="btn btn-success btn-sm text-white"
+          (click)="save()"
+          [disabled]="isSavingBtn"
+        >
+          저장
+        </button>
+      </ng-container>
+      <ng-container *ngIf="saveState === 'saving'">
+        <button class="btn btn-secondary btn-sm text-white" disabled>
+          <span
+            class="spinner-border spinner-border-sm me-2"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          저장중...
+        </button>
+      </ng-container>
+      <ng-container *ngIf="saveState === 'done'">
+        <button class="btn btn-primary btn-sm text-white" disabled>
+          <i class="bi bi-check2-circle me-1"></i> 저장완료
+        </button> </ng-container
+      >}
+    </div>
+  </div>
+
+  <!-- 전체 row: 에디터와 사이드 메뉴 병렬 배치 -->
+  <div
+    class="editor-wrapper overflow-auto d-flex flex-grow-1 position-relative"
+    style="min-width: 400px"
+    [ngClass]="{ 'dark-mode': isDarkMode }"
+  >
+    <!-- 전체 row: 에디터와 사이드 메뉴 병렬 배치 -->
+    <as-split
+      direction="horizontal"
+      [gutterSize]="6"
+      class="flex-grow-1 overflow-hidden"
+      [ngClass]="{ 'dark-mode': isDarkMode }"
+    >
+      <!-- 왼쪽: 에디터 영역 -->
+      <as-split-area [size]="70">
+        <div class="d-flex flex-column h-100">
+          <!-- 정제된 글 있을 경우 상단 버튼 -->
+          @if(refinedHtmlContent) {
+          <div class="d-flex justify-content-end p-2">
+            <button
+              type="button"
+              class="btn btn-success btn-sm me-2"
+              (click)="savePurify()"
+            >
+              게시
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary btn-sm"
+              (click)="cancelPurify()"
+            >
+              닫기
+            </button>
+          </div>
+          }
+
+          <!-- 스플릿 에디터 -->
+          <as-split
+            direction="horizontal"
+            gutterSize="6"
+            *ngIf="refinedHtmlContent; else singleEditor"
+          >
+            <as-split-area [size]="50">
+              <ngx-editor-menu [editor]="editor"></ngx-editor-menu>
+              <div class="flex-grow-1 overflow-auto">
+                <ngx-editor
+                  [editor]="editor"
+                  [(ngModel)]="htmlContent"
+                  (ngModelChange)="onContentChange($event)"
+                  placeholder="내용을 입력하세요..."
+                ></ngx-editor>
+              </div>
+            </as-split-area>
+            <as-split-area
+              [size]="50"
+              style="border: 1px solid #d5ec01d0; margin-left: 20px"
+            >
+              <ngx-editor-menu [editor]="refinedEditor"></ngx-editor-menu>
+              <div class="flex-grow-1 overflow-auto">
+                <ngx-editor
+                  [editor]="refinedEditor"
+                  [ngModel]="refinedHtmlContent"
+                ></ngx-editor>
+              </div>
+            </as-split-area>
+          </as-split>
+
+          <!-- 단일 에디터 -->
+          <ng-template #singleEditor>
+            <ngx-editor-menu [editor]="editor"></ngx-editor-menu>
+            <div class="flex-grow-1 overflow-auto">
+              <ngx-editor
+                [editor]="editor"
+                [(ngModel)]="htmlContent"
+                (ngModelChange)="onContentChange($event)"
+                placeholder="내용을 입력하세요..."
+              ></ngx-editor>
+            </div>
+          </ng-template>
+        </div>
+      </as-split-area>
+
+      <!-- 오른쪽: 사이드 옵션 메뉴 -->
+      <as-split-area [size]="30">
+        <div class="side-menu d-flex flex-column h-100 overflow-hidden">
+          <div
+            class="flex-grow-1 p-3"
+            style="overflow-y: auto; max-height: 400px"
+          >
+            <ul class="list-unstyled">
+              <li *ngFor="let item of corrections" class="mb-2">
+                <div class="d-flex align-items-start">
+                  <button
+                    class="btn btn-outline-secondary p-0 px-1 mt-2 py-0 me-2"
+                    style="font-size: 0.75rem"
+                    (click)="modifySentence(item)"
+                  >
+                    <i class="bi-pencil"></i>
+                  </button>
+                  <button
+                    class="btn btn-outline-secondary p-0 px-1 mt-2 py-0 me-2"
+                    style="font-size: 0.75rem"
+                    (click)="toggleHighlight(item)"
+                  >
+                    <i
+                      [ngClass]="
+                        item.isHighlighted
+                          ? 'bi-arrow-clockwise'
+                          : 'bi-search-heart'
+                      "
+                    ></i>
+                  </button>
+                  <div class="flex-grow-1">
+                    <b class="d-block text-wrap" style="word-break: break-word">
+                      {{ item.corrected }}
+                    </b>
+                    <small
+                      class="d-block text-wrap"
+                      style="word-break: break-word; white-space: normal"
+                      [innerHTML]="formatExplanation(item.explanation)"
+                    ></small>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="p-3 small text-muted">
+            <div class="form-check mb-3">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="visible"
+                [checked]="blog.publishYn === '1'"
+                (change)="onPublishChange($event)"
+              />
+              <label class="form-label" for="visible">공개 여부</label>
+            </div>
+
+            <label class="fw-bold form-label mb-2">태그</label>
+            <input
+              type="text"
+              class="form-control mb-3"
+              [(ngModel)]="blog.tags"
+              placeholder="태그 입력"
+            />
+
+            <div>
+              <label class="form-label mb-0">수정일</label>
+              <span class="ms-2 form-text">{{ blog.formatUpdateDate }}</span>
+            </div>
+            <div class="mt-2">
+              <label class="form-label mb-0">생성일</label>
+              <span class="ms-2 form-text">{{ blog.formatPublishedDate }}</span>
+            </div>
+          </div>
+        </div>
+      </as-split-area>
+    </as-split>
+  </div>
+</div>
+
+@if(showMiniMenu){
+<div class="blog-toolbar">
+  <i
+    class="bi bi-arrow-clockwise"
+    (click)="setDefaultStyle()"
+    title="원래대로"
+  ></i>
+
+  <i
+    class="bi bi-sunglasses ms-2"
+    title="누가볼때"
+    (click)="setSecreteStyle()"
+  ></i>
+  <i
+    class="bi bi-eyeglasses ms-2"
+    title="편안하게"
+    (click)="setComportStyle()"
+  ></i>
+  <i
+    class="bi bi-arrow-down-right-circle ms-3"
+    style="font-size: 1rem"
+    (click)="hideMenu()"
+    title="메뉴 숨기기"
+  ></i>
+</div>
+}
+<!-- 메뉴 축소-->
+@if(showMiniMenu == false){
+<i
+  class="bi bi-arrow-up-left-circle-fill blog-menu-show-icon"
+  (click)="showMenu()"
+  title="메뉴 열기"
+></i>
+}
+
+<app-toast-message #toastRef></app-toast-message>

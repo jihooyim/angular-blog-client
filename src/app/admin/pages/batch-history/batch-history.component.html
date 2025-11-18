@@ -1,0 +1,71 @@
+<div class="container-fluid mt-2" style="height: 90vh">
+  <div class="row">
+    <div
+      class="d-flex justify-content-center flex-column flex-md-row flex-wrap"
+    >
+      <!-- Job 선택 드롭다운 -->
+
+      <div class="col-12 col-md-auto d-flex align-items-center mb-3">
+        <label for="jobSelect" class="me-4" style="font-size: 0.7rem"
+          >Job Name:
+        </label>
+        <ng-select
+          id="jobSelect"
+          class=""
+          [items]="jobNames"
+          [(ngModel)]="selectedJob"
+          [searchable]="false"
+          [clearable]="false"
+          class="custom-ng-select"
+          (change)="getList()"
+        ></ng-select>
+      </div>
+    </div>
+  </div>
+  <!-- 그리드 영역 -->
+  <div class="row mt-3">
+    <div
+      class="col-12 d-flex justify-content-between align-items-center px-2 py-2"
+    >
+      <div class="col-auto d-flex align-items-center ps-4">
+        전체 : <span class="px-2">{{ comma(totalRowCount$ | async) }}</span> 건
+      </div>
+    </div>
+    <div
+      class="col-12 ag-grid-container"
+      style="width: 100%; padding: 0; margin: 0"
+    >
+      <app-batch-history-grid
+        [jobName]="selectedJob"
+        [rowData]="rows"
+        [context]="gridContext"
+      ></app-batch-history-grid>
+    </div>
+  </div>
+</div>
+<div
+  class="modal fade show"
+  id="messagePopup"
+  *ngIf="popupMessage"
+  style="display: block; background: transparent !important"
+>
+  <div class="modal-dialog">
+    <div class="modal-content" style="width: 800px">
+      <div class="modal-header align-items-center gap-2">
+        <p class="modal-title">에러 메시지</p>
+        <button
+          type="button"
+          class="btn btn-sm btn-secondary"
+          (click)="popupMessage = null"
+        >
+          닫기
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre style="white-space: pre-wrap; height: 300px">{{
+          popupMessage
+        }}</pre>
+      </div>
+    </div>
+  </div>
+</div>

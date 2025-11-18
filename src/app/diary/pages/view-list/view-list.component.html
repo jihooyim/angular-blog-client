@@ -1,0 +1,32 @@
+<div *ngFor="let year of getSortedKeys(groupedByYearMonth)">
+  <div class="year-title">
+    {{ year }}
+    <span class="year-count">({{ groupedByYearMonth[year].count }})</span>
+  </div>
+
+  <div *ngFor="let month of getSortedKeys(groupedByYearMonth[year])">
+    <div class="month-header ps-1" (click)="toggleMonth(year, month)">
+      <span class="month-text">
+        {{ formatMonth(month) }}월
+        <span class="arrow-expend">
+          {{ isMonthExpanded(year, month) ? "▼" : "▶" }}
+        </span>
+        <!-- 글 개수 표시 -->
+        <span class="month-count">
+          ({{ groupedByYearMonth[year][month].count }})
+        </span>
+      </span>
+    </div>
+
+    <ul *ngIf="isMonthExpanded(year, month)" class="no-bullets ps-2">
+      <li
+        *ngFor="let post of groupedByYearMonth[year][month].posts"
+        [class.active]="post.blogId === selectedBlogId"
+      >
+        <a (click)="onTitleClick(post.blogId, year, month)">
+          {{ post.title }} 
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

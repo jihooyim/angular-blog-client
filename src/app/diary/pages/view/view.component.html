@@ -1,0 +1,160 @@
+<div
+  class="blog-background"
+  [style.background-image]="'url(' + backgroundImageUrl + ')'"
+>
+  <div class="layout-container d-flex flex-column flex-md-row">
+    <div class="detail-section col-12 col-md-8">
+      <div
+        *ngIf="showNewWritePage === true; else blogView"
+        class="d-flex flex-column justify-content-center align-items-center text-center py-5 blog-container"
+      >
+        <h2 class="mb-3">📭 새글 쓰러 가기!</h2>
+        <button class="btn btn-secondary btn-lg" (click)="goToNewPage()">
+          ✍ 글쓰기
+        </button>
+      </div>
+
+      <ng-template #blogView>
+        <div class="blog-container">
+          <div class="blog-title" #blogTitle tabindex="-1">
+            {{ title || "(제목 없음)" }}
+          </div>
+          <div class="blog-date">
+            {{ formatPublishedDate?.slice(0, 10) }}
+            @if (showToast === false) {
+            <i class="bi bi-copy ms-2" title="글 복사" (click)="copyBlog()"></i>
+            } @if (showToast === true) {
+            <span class="text-info">✔ 복사됨!</span>
+            }
+          </div>
+          <div class="blog-content" [innerHTML]="htmlContent ?? ''"></div>
+
+          <ng-container *ngFor="let tag of tagList; trackBy: trackByIndex">
+            <div class="py-3 pe-2">
+              <span class="tag-span">{{ tag }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </ng-template>
+    </div>
+
+    @if(list && list.length > 0) {
+
+    <div class="list-section col-12 col-md-4 mb-4 mb-md-0">
+      <app-view-list
+        [list]="list"
+        [selectedBlogId]="blogId"
+        [isMenuSortUp]="isMenuSortUp"
+        (selectBlog)="handleBlogSelect($event)"
+      ></app-view-list>
+    </div>
+    }
+  </div>
+
+  @if(showMiniMenu && blogId) {
+  <div class="blog-toolbar">
+    <div class="edit-icon-group d-flex gap-2 ms-2">
+      <i
+        class="bi bi-arrow-clockwise"
+        (click)="setDefaultStyle()"
+        title="원래대로"
+      ></i>
+
+      <i
+        class="bi bi-sunglasses"
+        title="누가볼때"
+        (click)="setSecreteStyle()"
+      ></i>
+
+      <i
+        class="bi bi-eyeglasses"
+        title="편안하게"
+        (click)="setComportStyle()"
+      ></i>
+      <div class="font-control">
+        <i
+          class="bi bi-caret-up"
+          title="글씨 키우기"
+          (click)="fontSizePlus()"
+        ></i>
+        <i
+          class="bi bi-caret-down"
+          title="글씨 작게"
+          (click)="fontSizeMinus()"
+        ></i>
+      </div>
+      <input
+        type="color"
+        title="색상 선택"
+        (input)="changeColor($event)"
+        style="width: 30px"
+      />
+
+      <!--메뉴 오름차순-->
+      @if(isMenuSortUp === false){
+      <i
+        class="bi bi-sort-up"
+        title="메뉴 오름차순"
+        (click)="changeSortType(true)"
+      ></i>
+      }
+
+      <!--메뉴 내림차순-->
+      @if(isMenuSortUp === true){
+      <i
+        class="bi bi-sort-down"
+        title="메뉴 내림차순"
+        (click)="changeSortType(false)"
+      ></i>
+      }
+    </div>
+    <div class="edit-icon-group d-flex gap-2 ms-2">
+      @if (isLoggedIn) {
+      <!-- 수정버튼 -->
+      @if(blogId) {
+      <div class="edit-icon">
+        <i class="bi bi-pen" (click)="goToEdit()" title="수정"></i>
+      </div>
+      }
+      <div class="edit-icon">
+        <i
+          class="bi bi-pencil-square"
+          (click)="goToNewPage()"
+          title="+새글"
+        ></i>
+      </div>
+      <div class="edit-icon">
+        <i
+          class="bi bi-list-columns"
+          (click)="goToManage()"
+          title="관리목록"
+        ></i>
+      </div>
+      <div class="edit-icon">
+        <i
+          class="bi bi-search-heart"
+          (click)="goToDictionary()"
+          title="국어사전"
+        ></i>
+      </div>
+      }
+
+      <!-- 이 아이콘만 오른쪽 끝으로 -->
+      <i
+        class="bi bi-arrow-down-right-circle ms-auto"
+        (click)="hideMenu()"
+        title="메뉴 숨기기"
+      ></i>
+    </div>
+  </div>
+  }
+
+  <!-- 메뉴 축소-->
+  @if(showMiniMenu == false){
+  <i
+    class="bi bi-arrow-up-left-circle-fill blog-menu-show-icon"
+    (click)="showMenu()"
+    title="메뉴 열기"
+  ></i>
+  }
+</div>
