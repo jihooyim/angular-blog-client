@@ -4,13 +4,18 @@ import { BehaviorSubject, finalize, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { OverlayService } from '../../../shared/services/overlay.service';
 import { KoreaDictionaryService } from '../../services/korea-dictionary.service';
-import { BlogsRequestDto } from '../../models/diary.model';
 import { AsyncPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { GridTextPopupComponent } from '../../../shared/components/grid-text-popup/grid-text-popup.component';
 
 @Component({
   selector: 'app-korea-dictionary-list.component',
-  imports: [KoreaDictionaryListGridComponent, AsyncPipe, FormsModule],
+  imports: [
+    KoreaDictionaryListGridComponent,
+    AsyncPipe,
+    FormsModule,
+    GridTextPopupComponent,
+  ],
   templateUrl: './korea-dictionary-list.component.html',
   styleUrl: './korea-dictionary-list.component.css',
 })
@@ -28,6 +33,8 @@ export class KoreaDictionaryListComponent {
   currentPage = 0;
   pageSize = 20;
   totalCount = 0;
+  popupMessage: string = '';
+  popupTitle: string = '';
 
   get totalPages(): number {
     const total = Number(this.totalCount);
@@ -133,5 +140,11 @@ export class KoreaDictionaryListComponent {
   comma(n: any) {
     const v = Number(n);
     return Number.isFinite(v) ? v.toLocaleString('ko-KR') : '0';
+  }
+
+  showPopup(params: any) {
+    console.log(params);
+    this.popupTitle = params.word;
+    this.popupMessage = params.definitionOriginal;
   }
 }

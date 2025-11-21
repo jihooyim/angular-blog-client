@@ -88,6 +88,9 @@ export class KoreaDictionaryListGridComponent {
       headerName: '단어',
       minWidth: 200,
       editable: false,
+      onCellClicked: (params) => {
+        params.context?.componentParent?.showPopup(params.data);
+      },
     },
     {
       field: 'targetCode',
@@ -159,6 +162,11 @@ export class KoreaDictionaryListGridComponent {
       minWidth: 300,
       maxWidth: 800,
       editable: false,
+      tooltipField: 'definition',
+      cellClass: 'ag-cell-with-tooltip',
+      onCellClicked: (params) => {
+        params.context?.componentParent?.showPopup(params.data);
+      },
     },
     {
       field: 'definitionOriginal',
@@ -166,6 +174,11 @@ export class KoreaDictionaryListGridComponent {
       minWidth: 300,
       maxWidth: 800,
       editable: false,
+      tooltipField: 'definitionOriginal',
+      cellClass: 'ag-cell-with-tooltip',
+      onCellClicked: (params) => {
+        params.context?.componentParent?.showPopup(params.data);
+      },
     },
     {
       field: 'formatCreateDate',

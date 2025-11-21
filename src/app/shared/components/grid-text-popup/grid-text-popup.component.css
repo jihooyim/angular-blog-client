@@ -1,0 +1,4 @@
+#messagePopup div {
+  background-color: var(--main-bg) !important;
+  color: var(--text-color) !important;
+}

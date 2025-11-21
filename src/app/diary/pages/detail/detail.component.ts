@@ -7,8 +7,14 @@ import {
   ElementRef,
   RendererStyleFlags2,
   AfterViewInit,
+  TemplateRef,
 } from '@angular/core';
-import { Editor, NgxEditorMenuComponent, NgxEditorComponent } from 'ngx-editor';
+import {
+  Editor,
+  NgxEditorMenuComponent,
+  NgxEditorComponent,
+  Toolbar,
+} from 'ngx-editor';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { CommonModule } from '@angular/common';
@@ -62,6 +68,15 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   isSideMenuCollapsed = false;
   refinedHtmlContent: string | null = null;
   refinedButtonName: RefinedButtonName = RefinedButtonNames.PURIFY;
+  fontSizes = ['12px', '14px', '16px', '18px', '24px'];
+
+  TOOLBAR_FULL: Toolbar = [
+    ['bold', 'italic', 'underline'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+  ];
 
   isLoadingSpellCheck = false; // 맞춤법체크 api 실행중여부
   spellCheckProgress = { current: 0, total: 0 };
@@ -588,6 +603,31 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   showMenu() {
     this.showMiniMenu = true;
+  }
+
+  onFontSizeChange(size: string) {
+    this.applyFontSize(size);
+  }
+
+  applyFontSize(size: string) {
+    const view = this.editor?.view;
+    if (!view) return;
+
+    const { state, dispatch } = view;
+    const { from, to } = state.selection;
+    const { schema, tr } = state;
+
+    const markType = schema.marks['textStyle'];
+
+    if (!markType) return;
+
+    const mark = markType.create({
+      style: `font-size: ${size}`,
+    });
+
+    if (mark) {
+      dispatch(tr.addMark(from, to, mark));
+    }
   }
 }
 

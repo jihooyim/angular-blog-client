@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, finalize } from 'rxjs';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { DynamicPopupComponent } from '../../../shared/components/popup/dynamic-popup.component';
+import { GridTextPopupComponent } from '../../../shared/components/grid-text-popup/grid-text-popup.component';
 
 @Component({
   selector: 'app-batch-history',
@@ -17,6 +19,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     AsyncPipe,
     CommonModule,
     NgSelectModule,
+    DynamicPopupComponent,
+    GridTextPopupComponent,
   ],
 })
 export class BatchHistoryComponent implements OnInit {
@@ -30,8 +34,8 @@ export class BatchHistoryComponent implements OnInit {
   loading = false;
 
   totalCount = 0;
-  popupMessage: string | null = null;
-
+  popupMessage: string = '';
+  popupTitle: string = '';
   gridContext = { componentParent: this };
   constructor(private batchHistoryService: BatchHistoryService) {}
 
@@ -83,6 +87,7 @@ export class BatchHistoryComponent implements OnInit {
   }
 
   showErrorPopup(message: string) {
+    this.popupTitle = '에러메세지';
     this.popupMessage = message;
   }
 }
