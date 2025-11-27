@@ -35,6 +35,7 @@ import { AngularSplitModule } from 'angular-split';
 import { ToastMessageComponent } from '../../../shared/components/toast-message/toast-message.component';
 import { SpellCheckService } from '../../services/spellCheck.service';
 import { environment } from '../../../../environments/environment.production';
+import { GridTextPopupComponent } from '../../../shared/components/grid-text-popup/grid-text-popup.component';
 
 @Component({
   selector: 'app-detail',
@@ -47,6 +48,7 @@ import { environment } from '../../../../environments/environment.production';
     NgIf,
     AngularSplitModule,
     ToastMessageComponent,
+    GridTextPopupComponent,
   ],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.css',
@@ -71,11 +73,15 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   fontSizes = ['12px', '14px', '16px', '18px', '24px'];
 
   TOOLBAR_FULL: Toolbar = [
-    ['bold', 'italic', 'underline'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5'] }],
+    ['bold', 'italic', 'underline', 'strike'],
     ['code', 'blockquote'],
     ['ordered_list', 'bullet_list'],
-    ['link', 'image'],
     ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+    ['horizontal_rule'],
+    ['undo', 'redo'],
+    ['link', 'image'],
   ];
 
   isLoadingSpellCheck = false; // 맞춤법체크 api 실행중여부
@@ -103,6 +109,13 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   customFontSize: number = this.defaultSize;
   customFontWeight: string = this.defaultFontWeight;
   showMiniMenu = true;
+
+  news: string = '';
+  outcomes: string = '';
+  weather: string = '';
+  popupTitle: string = '';
+  popupMessage: string = '';
+  showTextPopup: boolean = false;
 
   constructor(
     private themeService: ThemeService,
@@ -162,6 +175,9 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       this.htmlContent = this.blog.htmlContent ?? '';
     }
+
+    // 오늘 지출, 뉴스, 날씨 조회 api호출
+    this.getTodayInfo();
   }
 
   ngAfterViewInit(): void {
@@ -217,6 +233,35 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isError = true;
 
         setTimeout(() => (this.isError = false), 3000); // ✅ 3초 유지
+      },
+    });
+  }
+
+  getTodayInfo() {
+    this.blogService.getTodayNews().subscribe({
+      next: (res: string) => {
+        this.news = res;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+
+    this.blogService.getTodayWeather().subscribe({
+      next: (res: string) => {
+        this.weather = res;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+
+    this.blogService.getTodayOutcomes().subscribe({
+      next: (res: string) => {
+        this.outcomes = res;
+      },
+      error: (error) => {
+        console.error(error);
       },
     });
   }
@@ -601,36 +646,45 @@ export class DetailComponent implements OnInit, OnDestroy, AfterViewInit {
   hideMenu() {
     this.showMiniMenu = false;
   }
+
   showMenu() {
     this.showMiniMenu = true;
   }
 
-  onFontSizeChange(size: string) {
-    this.applyFontSize(size);
+  handlePopupClose() {
+    this.showTextPopup = false;
   }
 
-  applyFontSize(size: string) {
-    const view = this.editor?.view;
-    if (!view) return;
+  getTodayOutcomes() {
+    if (this.outcomes) {
+      this.popupTitle = "Today's spending details";
+      this.popupMessage = this.outcomes;
+      this.showTextPopup = true;
+    } else {
+      alert('오늘은 정보가 없습니다.');
+    }
+  }
 
-    const { state, dispatch } = view;
-    const { from, to } = state.selection;
-    const { schema, tr } = state;
+  getTodayNews() {
+    if (this.news != '') {
+      this.popupTitle = "Today's News";
+      this.popupMessage = this.news;
+      this.showTextPopup = true;
+    } else {
+      alert('오늘은 정보가 없습니다.');
+    }
+  }
 
-    const markType = schema.marks['textStyle'];
-
-    if (!markType) return;
-
-    const mark = markType.create({
-      style: `font-size: ${size}`,
-    });
-
-    if (mark) {
-      dispatch(tr.addMark(from, to, mark));
+  getTodayWeather() {
+    if (this.weather != '') {
+      this.popupTitle = "Today's weather";
+      this.popupMessage = this.weather;
+      this.showTextPopup = true;
+    } else {
+      alert('오늘은 정보가 없습니다.');
     }
   }
 }
-
 function getStyledSentence(original: string) {
   return `<span style="background-color: var(--hight-text-background-color);">${original}</span>`;
 }

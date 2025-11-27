@@ -36,6 +36,8 @@ export class BatchHistoryComponent implements OnInit {
   totalCount = 0;
   popupMessage: string = '';
   popupTitle: string = '';
+  showTextPopup: boolean = false;
+
   gridContext = { componentParent: this };
   constructor(private batchHistoryService: BatchHistoryService) {}
 
@@ -89,5 +91,9 @@ export class BatchHistoryComponent implements OnInit {
   showErrorPopup(message: string) {
     this.popupTitle = '에러메세지';
     this.popupMessage = message;
+    this.showTextPopup = true;
+  }
+  handlePopupClose() {
+    this.showTextPopup = false;
   }
 }

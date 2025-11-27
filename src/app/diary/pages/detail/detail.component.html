@@ -329,8 +329,33 @@
 <app-toast-message #toastRef></app-toast-message>
 
 <ng-template #customMenu>
-  <select #fontSizeSelect (change)="onFontSizeChange(fontSizeSelect.value)">
-    <option value="">폰트 크기</option>
-    <option *ngFor="let size of fontSizes" [value]="size">{{ size }}</option>
-  </select>
+  @if(weather) {
+  <i
+    class="bi bi-cloud-sun editor-icon-button"
+    title="오늘 날씨"
+    (click)="getTodayWeather()"
+  ></i
+  >} @if(news) {
+  <i
+    class="bi bi-newspaper editor-icon-button"
+    title="오늘 뉴스"
+    (click)="getTodayNews()"
+  ></i>
+  } @if(weather) {
+  <i
+    class="bi bi-credit-card editor-icon-button"
+    title="오늘 지출내역"
+    (click)="getTodayOutcomes()"
+  ></i
+  >}
 </ng-template>
+
+@if(showTextPopup == true){
+<app-grid-text-popup
+  [title]="popupTitle"
+  [popupMessage]="popupMessage"
+  [modalWidth]="490"
+  [modalHeight]="300"
+  (close)="handlePopupClose()"
+></app-grid-text-popup>
+}

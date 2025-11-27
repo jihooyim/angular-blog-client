@@ -27,3 +27,14 @@ ngx-editor {
   opacity: 0;
   transition: all 0.3s ease;
 }
+
+.editor-icon-button {
+  font-size: 1rem;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.editor-icon-button:hover {
+  color: #ffc107;
+  transform: scale(1.2); /* 1.2배 커짐 */
+}

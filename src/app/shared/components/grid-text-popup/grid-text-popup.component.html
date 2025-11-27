@@ -1,4 +1,3 @@
-@if(popupMessage !== '') {
 <div
   class="modal fade show"
   id="messagePopup"
@@ -9,11 +8,21 @@
       <div
         class="modal-header d-flex justify-content-between align-items-center"
       >
-        <p class="modal-title">{{ title }}</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="modal-title pe-4">{{ title }}</p>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary"
+            (click)="copy()"
+          >
+            {{ copyButtonTitle }}
+          </button>
+        </div>
+
         <button
           type="button"
           class="btn btn-sm btn-secondary"
-          (click)="popupMessage = ''"
+          (click)="closePopup()"
         >
           닫기
         </button>
@@ -28,4 +37,3 @@
     </div>
   </div>
 </div>
-}

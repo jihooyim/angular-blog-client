@@ -76,4 +76,14 @@ export class BlogService {
   checkSession(): Observable<any> {
     return this.api.get('/session-check');
   }
+
+  getTodayOutcomes(): Observable<string> {
+    return this.api.get<string>(`${this.baseUrl}/info//today/outcomes`);
+  }
+  getTodayWeather(): Observable<string> {
+    return this.api.get<string>(`${this.baseUrl}/info//today/weather`);
+  }
+  getTodayNews(): Observable<string> {
+    return this.api.get<string>(`${this.baseUrl}/info/today/news`);
+  }
 }

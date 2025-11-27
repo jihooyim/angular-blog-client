@@ -35,6 +35,7 @@ export class KoreaDictionaryListComponent {
   totalCount = 0;
   popupMessage: string = '';
   popupTitle: string = '';
+  showTextPopup: boolean = false;
 
   get totalPages(): number {
     const total = Number(this.totalCount);
@@ -143,8 +144,11 @@ export class KoreaDictionaryListComponent {
   }
 
   showPopup(params: any) {
-    console.log(params);
     this.popupTitle = params.word;
     this.popupMessage = params.definitionOriginal;
+    this.showTextPopup = true;
+  }
+  handlePopupClose() {
+    this.showTextPopup = false;
   }
 }

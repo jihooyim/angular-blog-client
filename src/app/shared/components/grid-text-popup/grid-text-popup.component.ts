@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { NgStyle } from '@angular/common'; // NgStyle 임포트
-
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { NgStyle } from '@angular/common';
 @Component({
   selector: 'app-grid-text-popup',
   imports: [NgStyle],
@@ -12,4 +11,26 @@ export class GridTextPopupComponent {
   @Input() title: string = '';
   @Input() modalWidth: number = 800;
   @Input() modalHeight: number = 300;
+
+  @Output() close = new EventEmitter<void>();
+
+  copyButtonTitle: string = 'copy';
+
+  copy() {
+    navigator.clipboard
+      .writeText(this.popupMessage)
+      .then(() => {
+        this.copyButtonTitle = 'copied!';
+        setTimeout(() => {
+          this.copyButtonTitle = 'copy';
+        }, 2000);
+      })
+      .catch((err) => {
+        console.error('복사 실패:', err);
+      });
+  }
+
+  closePopup() {
+    this.close.emit();
+  }
 }

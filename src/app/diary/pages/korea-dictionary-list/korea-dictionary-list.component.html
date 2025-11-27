@@ -79,9 +79,12 @@
   </div>
 </div>
 
+@if(showTextPopup == true){
 <app-grid-text-popup
   [title]="popupTitle"
   [popupMessage]="popupMessage"
   [modalWidth]="500"
   [modalHeight]="100"
+  (close)="handlePopupClose()"
 ></app-grid-text-popup>
+}

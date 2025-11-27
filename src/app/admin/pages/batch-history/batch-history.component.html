@@ -43,8 +43,10 @@
     </div>
   </div>
 </div>
-
+@if(showTextPopup == true){
 <app-grid-text-popup
   [title]="popupTitle"
   [popupMessage]="popupMessage"
+  (close)="handlePopupClose()"
 ></app-grid-text-popup>
+}
