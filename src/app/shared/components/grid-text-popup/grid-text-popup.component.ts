@@ -9,8 +9,8 @@ import { NgStyle } from '@angular/common';
 export class GridTextPopupComponent {
   @Input() popupMessage: string = '';
   @Input() title: string = '';
-  @Input() modalWidth: number = 800;
-  @Input() modalHeight: number = 300;
+  @Input() modalWidth: number = 50;
+  @Input() modalHeight: number = 30;
 
   @Output() close = new EventEmitter<void>();
 

@@ -46,6 +46,8 @@
 @if(showTextPopup == true){
 <app-grid-text-popup
   [title]="popupTitle"
+  [modalWidth]="50"
+  [modalHeight]="50"
   [popupMessage]="popupMessage"
   (close)="handlePopupClose()"
 ></app-grid-text-popup>
