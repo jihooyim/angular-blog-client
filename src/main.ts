@@ -18,6 +18,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
 import { App } from './app/app';
 import { authErrorInterceptor } from './app/shared/interceptors/auth-error.interceptor';
+import { authInterceptor } from './app/shared/interceptors/auth.interceptor';
 
 bootstrapApplication(App, {
   providers: [
@@ -29,7 +30,7 @@ bootstrapApplication(App, {
         cookieName: 'XSRF-TOKEN',
         headerName: 'X-XSRF-TOKEN',
       }),
-      withInterceptors([authErrorInterceptor])
+      withInterceptors([authErrorInterceptor, authInterceptor])
     ),
     // provideAppInitializer(async () => {
     //   const svc = inject(CsrfTokenService);
